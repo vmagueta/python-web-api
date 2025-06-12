@@ -1,7 +1,8 @@
 import cgi
 from database import conn
-from pathlib import Path
+from jinja2 import Environment, FileSystemLoader
 
+env = Environment(loader=FileSystemLoader("templates"))
 
 def get_posts_from_database(post_id=None):
     cursor = conn.cursor()
@@ -16,16 +17,8 @@ def get_posts_from_database(post_id=None):
 
 
 def render_template(template_name, **context):
-    template = Path(template_name).read_text()
-    return template.format(**context).encode()
-
-
-def get_post_list(posts):
-    post_list = [
-        f"""<li> <a href='/{post["id"]}'> {post['title']} </a> </li>"""
-        for post in posts
-    ]
-    return "\n".join(post_list)
+    template = env.get_template(template_name)
+    return template.render(**context).encode("utf-8")
 
 
 def add_new_post(post):
@@ -51,7 +44,7 @@ def application(environ, start_response):
     if path == "/" and method == "GET":
         posts = get_posts_from_database()
         body = render_template(
-            "list.template.html", post_list=get_post_list(posts)
+            "list.template.html", post_list=posts
         )
         status = "200 OK"
     elif path.split("/")[-1].isdigit() and method == "GET":
@@ -77,6 +70,7 @@ def application(environ, start_response):
     headers = [("Content-type", "text/html")]
     start_response(status, headers)
     return [body]
+
 
 if __name__ == "__main__":
     from wsgiref.simple_server import make_server
