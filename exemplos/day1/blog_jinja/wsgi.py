@@ -1,4 +1,5 @@
 import cgi
+import json
 from database import conn
 from jinja2 import Environment, FileSystemLoader
 
@@ -36,6 +37,7 @@ def add_new_post(post):
 def application(environ, start_response):
     body = b"Content Not Found"
     status = "404 Not Found"
+    content_type = "text/html"
     # Processar o request
     path = environ["PATH_INFO"]
     method = environ["REQUEST_METHOD"]
@@ -47,6 +49,13 @@ def application(environ, start_response):
             "list.template.html", post_list=posts
         )
         status = "200 OK"
+
+    elif path == "/api" and method == "GET":
+        posts = get_posts_from_database()
+        status = "200 OK"
+        body = json.dumps(posts).encode("utf-8")
+        content_type = "application/json" # MIME types
+
     elif path.split("/")[-1].isdigit() and method == "GET":
         post_id = path.split("/")[-1]
         body = render_template(
@@ -67,7 +76,7 @@ def application(environ, start_response):
         status = "201 Created"
 
     # Criar o response
-    headers = [("Content-type", "text/html")]
+    headers = [("Content-type", content_type)]
     start_response(status, headers)
     return [body]
 
