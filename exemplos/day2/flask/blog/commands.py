@@ -4,7 +4,8 @@ from blog.posts import (
     new_post, 
     get_all_posts, 
     get_post_by_slug, 
-    update_post_by_slug
+    update_post_by_slug,
+    delete_post
 )
 
 
@@ -62,7 +63,20 @@ def update(slug, content, published):
     click.echo("Post updated")
 
 
-# TODO: Criar comando para deletar ou despublicar posts
+@post.command()
+@click.argument("slug")
+def unpublish(slug):
+    """Unpublish a blog post by slug."""
+    update_post_by_slug(slug, {"published": False})
+    click.echo("Post unpublished")
+
+
+@post.command()
+@click.argument("slug")
+def delete(slug):
+    """Delete a blog post by slug."""
+    delete_post(slug)
+    click.echo(f"Post {slug} deleted")
 
 
 def configure(app):

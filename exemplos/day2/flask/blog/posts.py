@@ -1,5 +1,6 @@
 from blog.database import mongo
 from datetime import datetime
+from unidecode import unidecode
 
 def get_all_posts(published: bool = True):
     """Get all blog posts order by date."""
@@ -27,8 +28,7 @@ def update_post_by_slug(slug: str, data: dict) -> dict:
 
 def new_post(title: str, content: str, published: bool = True) -> str:
     """Create a new blog post and returns a slug."""
-    # TODO: Refatorar a criacao do slug removendo acentos
-    slug = title.replace(" ", "-").replace("_", "-").lower()
+    slug = unidecode(title.replace(" ", "-").replace("_", "-").lower())
     # TODO: Verificar se post com este slug ja existe
     mongo.db.posts.insert_one(
         {
@@ -40,3 +40,9 @@ def new_post(title: str, content: str, published: bool = True) -> str:
         }
     )
     return slug
+
+
+def delete_post(slug):
+    """Delete a post for db."""
+    mongo.db.posts.delete_one({"slug": slug})
+    return f"Post {slug} deleted."
