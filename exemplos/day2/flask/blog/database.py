@@ -1,6 +1,6 @@
 from flask_pymongo import PyMongo
 
-mongo = PyMongo() # Lazy Initiation
+mongo = PyMongo()  # Lazy Initiation
 
 
 def configure(app):

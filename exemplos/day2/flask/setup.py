@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup (
+setup(
     name="flask_blog",
     version="0.1.0",
     packages=["blog"],

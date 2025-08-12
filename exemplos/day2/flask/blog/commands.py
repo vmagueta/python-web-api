@@ -1,11 +1,11 @@
 import click
 
 from blog.posts import (
-    new_post, 
-    get_all_posts, 
-    get_post_by_slug, 
+    new_post,
+    get_all_posts,
+    get_post_by_slug,
     update_post_by_slug,
-    delete_post
+    delete_post,
 )
 
 

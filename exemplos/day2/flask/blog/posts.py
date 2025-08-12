@@ -2,6 +2,7 @@ from blog.database import mongo
 from datetime import datetime
 from unidecode import unidecode
 
+
 def get_all_posts(published: bool = True):
     """Get all blog posts order by date."""
     posts = mongo.db.posts.find({"published": True})
@@ -19,6 +20,7 @@ def get_post_by_slug(slug: str) -> dict:
     """
     post = mongo.db.posts.find_one({"slug": slug})
     return post
+
 
 def update_post_by_slug(slug: str, data: dict) -> dict:
     """Update a blog post by its slug."""

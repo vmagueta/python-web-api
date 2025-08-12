@@ -1,6 +1,7 @@
 from flask import Flask
 from blog.config import configure
 
+
 def create_app():
     """\
     Main Factory
