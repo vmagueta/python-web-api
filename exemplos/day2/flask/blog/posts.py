@@ -1,3 +1,4 @@
+import pymongo
 from blog.database import mongo
 from datetime import datetime
 from unidecode import unidecode
@@ -6,7 +7,7 @@ from unidecode import unidecode
 def get_all_posts(published: bool = True):
     """Get all blog posts order by date."""
     posts = mongo.db.posts.find({"published": True})
-    return posts.sort("date")
+    return posts.sort("date", pymongo.DESCENDING)
 
 
 def get_post_by_slug(slug: str) -> dict:
