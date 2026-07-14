@@ -9,6 +9,7 @@ setup(
         "flask-pymongo", 
         "dynaconf", 
         "flask-bootstrap", 
-        "mistune"
+        "mistune",
+        "flask-simplelogin",
     ],
 )

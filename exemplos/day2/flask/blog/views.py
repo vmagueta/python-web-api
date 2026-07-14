@@ -5,7 +5,8 @@ from flask import (
     abort,
     request,
     url_for,
-    redirect
+    redirect,
+    session,
 )
 from blog.posts import (
     get_all_posts,
@@ -13,6 +14,7 @@ from blog.posts import (
     new_post,
     # TODO: Criar o update posts
 )
+from flask_simplelogin import login_required
 
 
 bp = Blueprint("post", __name__, template_folder="templates")
@@ -21,6 +23,7 @@ bp = Blueprint("post", __name__, template_folder="templates")
 @bp.route("/")
 def index():
     posts = get_all_posts()
+    session['test'] = "ValorQualquer"
     return render_template("index.html.j2", posts=posts)
 
 
@@ -33,6 +36,7 @@ def detail(slug):
 
 
 @bp.route("/new", methods=["GET", "POST"])
+@login_required()
 def new():
     if request.method == "POST":
         title = request.form.get("title")
