@@ -6,7 +6,6 @@ from flask import (
     request,
     url_for,
     redirect,
-    session,
 )
 from blog.posts import (
     get_all_posts,
@@ -23,7 +22,7 @@ bp = Blueprint("post", __name__, template_folder="templates")
 @bp.route("/")
 def index():
     posts = get_all_posts()
-    session['test'] = "ValorQualquer"
+#    session['test'] = "ValorQualquer"
     return render_template("index.html.j2", posts=posts)
 
 
